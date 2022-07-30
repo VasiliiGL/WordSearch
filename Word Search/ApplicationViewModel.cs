@@ -22,6 +22,22 @@ namespace Word_Search
             }
         }
 
+        private RelayCommand parametersCommand;
+        public RelayCommand ParametersCommand
+        {
+            get
+            {
+                return parametersCommand ??
+                  (parametersCommand = new RelayCommand(obj =>
+                  {
+                      ModelData phone = new ModelData();
+                      Datas.Insert(0, phone);
+                      SelectedData = phone;
+                  }));
+            }
+        }
+
+
         public ApplicationViewModel()
         {
             Datas = new ObservableCollection<ModelData>
