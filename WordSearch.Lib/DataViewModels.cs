@@ -4,12 +4,27 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Text;
+using WordSearch.Models.CRUDs;
 
 namespace WordSearch.Models
 {
-    class DataViewModels : INotifyPropertyChanged
+    public class DataViewModels : INotifyPropertyChanged
     {
+        public Directory Directory { get; set; }
+        public ObservableCollection<File> Files { get; set; }
         public ObservableCollection<Word> SetWords { get; set; }
+        public TextCRUD TextCrud { get; set; }
+        public SetWordsCRUD SetWordsCRUD { get; set; }
+
+        public DataViewModels()
+        {
+            Directory = new Directory { DirectorySearch = "Директория не выбрана" };
+            Files = new ObservableCollection<File>();            
+            SetWords = new ObservableCollection<Word>();
+            TextCrud = new TextCRUD();
+            SetWordsCRUD = new SetWordsCRUD();
+        }
+
         private Word _selectedWord;
         public Word SelectedWord
         {
