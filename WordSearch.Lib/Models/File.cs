@@ -11,7 +11,9 @@ namespace WordSearch.Models
         private string _nameFile;
         private string _pathFile;
         private string _text;
-        //public TextCrud TextCrud { get; set; }
+        private long _sizeFile;
+        
+
         public Dictionary<Word, int> ListDangerWords { get; set; }
         public string NameFile
         {
@@ -34,6 +36,19 @@ namespace WordSearch.Models
                 {
                     _pathFile = value;
                     OnPropertyChanged(nameof(PathFile));
+                }
+            }
+        }
+
+        public long SizeFile
+        {
+            get => _sizeFile;
+            set
+            {
+                if (_sizeFile != value)
+                {
+                    _sizeFile = value;
+                    OnPropertyChanged(nameof(SizeFile));
                 }
             }
         }
