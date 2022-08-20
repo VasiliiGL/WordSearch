@@ -1,0 +1,23 @@
+﻿<Window x:Class="Word_Search.ReportWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Word_Search"
+        xmlns:model="clr-namespase:WordSearch.Models;assembly=WordSearch.Models"
+        mc:Ignorable="d"
+        Title="ReportWindow" Height="450" Width="800">
+    <Grid Background="Lavender">
+        <ListView Name="ListFiles" ItemsSource="{Binding ListDangerFiles}">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn DisplayMemberBinding="{Binding Path=NameFile}"> Имя файла</GridViewColumn>
+                    <GridViewColumn DisplayMemberBinding="{Binding Path=PathFile}"> Путь</GridViewColumn>
+                    <GridViewColumn DisplayMemberBinding="{Binding Path=SizeFile}"> Размер,bytes</GridViewColumn>
+                </GridView>
+            </ListView.View>
+           
+        </ListView>
+
+    </Grid>
+</Window>
