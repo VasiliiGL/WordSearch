@@ -83,5 +83,20 @@ namespace Word_Search
             if (data.Files.Count == 0) MessageBox.Show(" файлы не найдены");
 
         }
+
+        private void SearchWordsUnsafe_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void Report_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void PrintReport_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }
