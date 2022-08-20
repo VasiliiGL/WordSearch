@@ -14,6 +14,7 @@
                     <GridViewColumn DisplayMemberBinding="{Binding Path=NameFile}"> Имя файла</GridViewColumn>
                     <GridViewColumn DisplayMemberBinding="{Binding Path=PathFile}"> Путь</GridViewColumn>
                     <GridViewColumn DisplayMemberBinding="{Binding Path=SizeFile}"> Размер,bytes</GridViewColumn>
+                    <GridViewColumn DisplayMemberBinding="{Binding Path=ListWordsReport}"> Слова </GridViewColumn> 
                 </GridView>
             </ListView.View>
            
