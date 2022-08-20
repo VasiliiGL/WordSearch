@@ -73,7 +73,7 @@ namespace Word_Search
                     {
                         FI = new FileInfo(findedFile);
                         if (FI.DirectoryName != @"D:\VASILII\Контрольная работа WordSearch\NewDirectory")
-                        data.ListFiles.Add(new WordSearch.Models.File { NameFile = FI.Name, PathFile = FI.FullName });
+                        data.ListFiles.Add(new WordSearch.Models.File { NameFile = FI.Name, PathFile = FI.FullName, SizeFile=FI.Length });
                     }
                     catch
                     {
@@ -94,6 +94,9 @@ namespace Word_Search
 
         private void Report_Click(object sender, RoutedEventArgs e)
         {
+            ReportWindow reportWindow = new ReportWindow(data);
+            reportWindow.Show();
+            
 
         }
 
@@ -101,5 +104,7 @@ namespace Word_Search
         {
 
         }
+
+        
     }
 }
