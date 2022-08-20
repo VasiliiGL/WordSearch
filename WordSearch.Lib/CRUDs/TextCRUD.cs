@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
+using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 
@@ -35,6 +36,7 @@ namespace WordSearch.Models.CRUDs
             }
             return isSearchWords;
         }
+
         public string ReadTextOfFile(string _path)
         {
             string path = _path;
@@ -54,6 +56,34 @@ namespace WordSearch.Models.CRUDs
             {
 
             }
+        }
+
+        public void SearchDangerWord (FileSearch file, ObservableCollection<Word> ListWords)
+        {
+            var text = ReadTextOfFile(file.PathFile);
+            List<string> listDangerWords = new List<string>();
+            List<string> list = new List<string>();
+            DeleteSigns(text);
+            string[] ListWordsInText = text.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+            foreach (var word in ListWordsInText)
+            {
+                for (var i=0; i< ListWords.Count; i++)
+                {
+                    if (string.Compare(word,ListWords[i].WordSearch)==0)
+                    {
+                        listDangerWords.Add(word);
+                    }
+                }
+            }
+            var grouped = listDangerWords
+                           .GroupBy(i => i)
+                           .Select(i => new { Word = i.Key, Count = i.Count() }).OrderByDescending(i => i.Count);
+            foreach (var i in grouped)
+            {
+                file.ListDangerWords.Add(i.Word, i.Count);
+                list.Add($"{i.Word} / {i.Count}");
+            }
+            file.ListWordsReport = string.Join(" ", list); 
         }
     }
 }
