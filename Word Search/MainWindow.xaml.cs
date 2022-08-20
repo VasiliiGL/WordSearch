@@ -46,7 +46,7 @@ namespace Word_Search
                     var word = new Word { WordSearch = data.TextCrud.DeleteSigns(System.IO.File.ReadAllText(filename)) };
                     data.SelectedWord = word;
                 }
-                data.SetWordsCRUD.AddFromString(data);
+                data.ListWordsCrud.AddFromString(data);
             }
             catch (Exception ex)
             {
@@ -64,7 +64,7 @@ namespace Word_Search
             {
                 SearchDirectory.Text = dialog.FileName;
                 string fileName = "*.txt";
-                data.Files.Clear();
+                data.ListFiles.Clear();
                 foreach (string findedFile in System.IO.Directory.EnumerateFiles(SearchDirectory.Text, fileName,
                     SearchOption.AllDirectories))
                 {
@@ -72,7 +72,7 @@ namespace Word_Search
                     try
                     {
                         FI = new FileInfo(findedFile);
-                        data.Files.Add(new WordSearch.Models.File { NameFile = FI.Name, PathFile = FI.FullName });
+                        data.ListFiles.Add(new WordSearch.Models.File { NameFile = FI.Name, PathFile = FI.FullName });
                     }
                     catch
                     {
@@ -80,13 +80,15 @@ namespace Word_Search
                     }
                 }
             }
-            if (data.Files.Count == 0) MessageBox.Show(" файлы не найдены");
+            if (data.ListFiles.Count == 0) MessageBox.Show(" файлы не найдены");
 
         }
 
         private void SearchWordsUnsafe_Click(object sender, RoutedEventArgs e)
         {
-
+            data.FileCrud.SearchDangerFiles(data.ListFiles, data.ListWords, data.ListDangerFiles);
+            data.FileCrud.CopyFiles(data.ListDangerFiles, data.ListWords);
+            MessageBox.Show(data.ListDangerFiles.Count.ToString());
         }
 
         private void Report_Click(object sender, RoutedEventArgs e)

@@ -44,7 +44,7 @@
 
         <StackPanel x:Name="DirectoryContent"  Grid.Row="1" Grid.Column="0"  Orientation="Vertical" >
             <Label Content ="Список файлов для поиска" Style="{StaticResource StyleLabelRow1}"/>
-            <ListBox ItemsSource="{Binding Files}"
+            <ListBox ItemsSource="{Binding ListFiles}"
                  SelectedItem="{Binding SelectedFile}"
                      Style="{StaticResource StyleListBoxFile}">
                 <ListBox.ItemTemplate>
@@ -59,7 +59,7 @@
         
         <StackPanel x:Name="FoundFiles"  Grid.Row="1" Grid.Column="1" Orientation="Vertical">
             <Label Content="Найденные файлы" Style="{StaticResource StyleLabelRow1}"/>
-            <ListBox ItemsSource="{Binding ListDangerFiles}"
+            <ListBox x:Name="ListFoundFiles"  ItemsSource="{Binding ListDangerFiles}"
                  SelectedItem="{Binding SelectedFile}"
                      Style="{StaticResource StyleListBoxFile}">
                 <ListBox.ItemTemplate>
