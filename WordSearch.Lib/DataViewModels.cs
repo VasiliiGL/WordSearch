@@ -11,8 +11,8 @@ namespace WordSearch.Models
     public class DataViewModels : INotifyPropertyChanged
     {
         public Directory Directory { get; set; }
-        public ObservableCollection<File> ListFiles { get; set; }
-        public ObservableCollection<File> ListDangerFiles { get; set; }
+        public ObservableCollection<FileSearch> ListFiles { get; set; }
+        public ObservableCollection<FileSearch> ListDangerFiles { get; set; }
         public ObservableCollection<Word> ListWords { get; set; }
         public TextCRUD TextCrud { get; set; }
         public ListWordsCRUD ListWordsCrud { get; set; }
@@ -21,8 +21,8 @@ namespace WordSearch.Models
         public DataViewModels()
         {
             Directory = new Directory { DirectorySearch = "Директория не выбрана" };
-            ListFiles = new ObservableCollection<File>();
-            ListDangerFiles = new ObservableCollection<File>();
+            ListFiles = new ObservableCollection<FileSearch>();
+            ListDangerFiles = new ObservableCollection<FileSearch>();
             ListWords = new ObservableCollection<Word>();
             TextCrud = new TextCRUD();
             ListWordsCrud = new ListWordsCRUD();
@@ -39,9 +39,9 @@ namespace WordSearch.Models
                 OnPropertyChanged("SelectedWord");
             }
         }
-        private File _selectedFile;
+        private FileSearch _selectedFile;
 
-        public File SelectedFile
+        public FileSearch SelectedFile
         {
             get { return _selectedFile; }
             set
