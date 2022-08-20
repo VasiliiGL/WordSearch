@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -28,10 +29,10 @@ namespace Word_Search
         public MainWindow()
         {
             InitializeComponent();
-            DataContext = data;
+            DataContext = data;         
         }
 
-        private void SelectWords_Click(object sender, RoutedEventArgs e)
+        private  void SelectWords_Click(object sender, RoutedEventArgs e)
         {
             try
             {
@@ -73,7 +74,7 @@ namespace Word_Search
                     {
                         FI = new FileInfo(findedFile);
                         if (FI.DirectoryName != @"D:\VASILII\Контрольная работа WordSearch\NewDirectory")
-                        data.ListFiles.Add(new WordSearch.Models.File { NameFile = FI.Name, PathFile = FI.FullName, SizeFile=FI.Length });
+                        data.ListFiles.Add(new FileSearch { NameFile = FI.Name, PathFile = FI.FullName, SizeFile=FI.Length });
                     }
                     catch
                     {
@@ -89,7 +90,26 @@ namespace Word_Search
         {
             data.FileCrud.SearchDangerFiles(data.ListFiles, data.ListWords, data.ListDangerFiles);
             data.FileCrud.CopyFiles(data.ListDangerFiles, data.ListWords);
-            if (data.ListDangerFiles.Count==0) _ = MessageBox.Show("Файлы не найдены");
+            if (data.ListDangerFiles.Count == 0) _ = MessageBox.Show("Файлы не найдены");
+            foreach (var f in data.ListDangerFiles)
+            {
+                data.TextCrud.SearchDangerWord(f, data.ListWords);
+            }
+           
+            //var tokenSource = new CancellationTokenSource();
+            //Task.Run(async() => await data.FileCrud.SearchAsync(data, tokenSource.Token), tokenSource.Token);
+            //Console.WriteLine("Остановить 1");
+            //var input = Console.ReadLine();
+            //if (input =="1")
+            //{
+            //    tokenSource.Cancel();
+            //}
+
+            //var tokenSource = new CancellationTokenSource();
+            //SearhFilesAsync();
+            //Console.WriteLine("Остановить 1");
+
+
         }
 
         private void Report_Click(object sender, RoutedEventArgs e)
@@ -105,6 +125,24 @@ namespace Word_Search
 
         }
 
+        public async Task SearhFilesAsync()
+        {
+            FileSearch file = new FileSearch();
+            //await Task.Run(() => data.FileCrud.Search(data));
+            for (var i=0;i<data.ListFiles.Count;i++)
+            {
+                await Task.Run(() =>
+                {
+                    if (data.TextCrud.IsSearchWords(data.TextCrud.ReadTextOfFile(data.ListFiles[i].PathFile), data.ListWords))
+                    {
+                        file = data.ListFiles[i];
+                        data.ListDangerFiles.Add(file);
+                    }
+                    
+                });
+               
+            }
+        }
         
     }
 }
