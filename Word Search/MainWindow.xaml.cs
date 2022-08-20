@@ -1,6 +1,8 @@
 ﻿using Microsoft.Win32;
+using Microsoft.WindowsAPICodePack.Dialogs;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -51,6 +53,35 @@ namespace Word_Search
                 Console.WriteLine(ex);
             }
             
+        }
+
+        private void SelecDirectory_Click(object sender, RoutedEventArgs e)
+        {
+            var dialog = new CommonOpenFileDialog();
+            dialog.IsFolderPicker = true;
+             CommonFileDialogResult result = dialog.ShowDialog();
+            if (result == CommonFileDialogResult.Ok)
+            {
+                SearchDirectory.Text = dialog.FileName;
+                string fileName = "*.txt";
+                data.Files.Clear();
+                foreach (string findedFile in System.IO.Directory.EnumerateFiles(SearchDirectory.Text, fileName,
+                    SearchOption.AllDirectories))
+                {
+                    FileInfo FI;
+                    try
+                    {
+                        FI = new FileInfo(findedFile);
+                        data.Files.Add(new WordSearch.Models.File { NameFile = FI.Name, PathFile = FI.FullName });
+                    }
+                    catch
+                    {
+                        continue;
+                    }
+                }
+            }
+            if (data.Files.Count == 0) MessageBox.Show(" файлы не найдены");
+
         }
     }
 }

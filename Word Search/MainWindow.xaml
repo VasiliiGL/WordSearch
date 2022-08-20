@@ -22,9 +22,9 @@
         </Grid.ColumnDefinitions>
         
         <StackPanel x:Name="InitialData" Grid.Row="0" Grid.ColumnSpan="2" Orientation="Vertical"
-                    DataContext="{Binding SelectedWord}"
+                    
                     Style="{StaticResource StyleStackPanel}">
-            <WrapPanel Orientation="Horizontal">
+            <WrapPanel Orientation="Horizontal" DataContext="{Binding SelectedWord}">
                 <Label Content="Слова для поиска:" Style="{StaticResource StyleLabel}"/>
                 <TextBox x:Name="WordsToSearch" Text="{Binding Path= WordSearch}" 
                          Style="{StaticResource StyleOutput}">
@@ -32,19 +32,20 @@
                 <Button x:Name="SelectWords" Content="Выбор" Style="{StaticResource StyleButton}"
                         Click="SelectWords_Click"/>
             </WrapPanel>
-            <WrapPanel Orientation="Horizontal">
+            <WrapPanel Orientation="Horizontal" DataContext="{Binding Directory}">
                 <Label Content="Директория:" Style="{StaticResource StyleLabel}"/>
-                <TextBox x:Name="SearchDirectory" Text="search directory" Style="{StaticResource StyleOutput}">
+                <TextBox x:Name="SearchDirectory"  Text="{Binding Path= DirectorySearch}" Style="{StaticResource StyleOutput}">
                 </TextBox>
-                <Button x:Name="SelecDirectory" Content="Выбор" Style="{StaticResource StyleButton}"/>
+                <Button x:Name="SelecDirectory" Content="Выбор" Style="{StaticResource StyleButton}"
+                        Click="SelecDirectory_Click"/>
             </WrapPanel>
         </StackPanel>
 
         <StackPanel x:Name="DirectoryContent"  Grid.Row="1" Grid.Column="0"  Orientation="Vertical" >
             <Label Content ="Список файлов для поиска" Style="{StaticResource StyleLabelRow1}"/>
             <ListBox ItemsSource="{Binding Files}"
-                 SelectedItem="{Binding SelectedFile}">
-              
+                 SelectedItem="{Binding SelectedFile}"
+                     Style="{StaticResource StyleListBoxFile}">
                 <ListBox.ItemTemplate>
                     <DataTemplate>
                         <StackPanel>
@@ -58,8 +59,8 @@
         <StackPanel x:Name="FoundFiles"  Grid.Row="1" Grid.Column="1" Orientation="Vertical">
             <Label Content="Найденные файлы" Style="{StaticResource StyleLabelRow1}"/>
             <ListBox ItemsSource="{Binding ListDangerFiles}"
-                 SelectedItem="{Binding SelectedFile}">
-
+                 SelectedItem="{Binding SelectedFile}"
+                     Style="{StaticResource StyleListBoxFile}">
                 <ListBox.ItemTemplate>
                     <DataTemplate>
                         <StackPanel>
