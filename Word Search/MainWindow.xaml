@@ -19,6 +19,7 @@
             <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
+        
         <StackPanel x:Name="InitialData" Grid.Row="0" Grid.ColumnSpan="2" Orientation="Vertical"
                     Style="{StaticResource StyleStackPanel}">
             <StackPanel Orientation="Horizontal">
@@ -33,6 +34,36 @@
                 </TextBox>
                 <Button x:Name="SelecDirectory" Content="Выбор" Style="{StaticResource StyleButton}"/>
             </StackPanel>
+        </StackPanel>
+
+        <StackPanel x:Name="DirectoryContent"  Grid.Row="1" Grid.Column="0"  Orientation="Vertical" >
+            <Label Content ="Список файлов для поиска" Style="{StaticResource StyleLabelRow1}"/>
+            <ListBox ItemsSource="{Binding Files}"
+                 SelectedItem="{Binding SelectedFile}">
+              
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel>
+                            <TextBlock Text="{Binding Path=NameFile}"/>
+                        </StackPanel>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+        </StackPanel>
+        
+        <StackPanel x:Name="FoundFiles"  Grid.Row="1" Grid.Column="1" Orientation="Vertical">
+            <Label Content="Найденные файлы" Style="{StaticResource StyleLabelRow1}"/>
+            <ListBox ItemsSource="{Binding ListDangerFiles}"
+                 SelectedItem="{Binding SelectedFile}">
+
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel>
+                            <TextBlock Text="{Binding Path=NameFile}"/>
+                        </StackPanel>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
         </StackPanel>
     </Grid>
 
