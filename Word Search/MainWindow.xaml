@@ -6,8 +6,34 @@
         xmlns:local="clr-namespace:Word_Search"
         mc:Ignorable="d"
         Title="Word Search" Height="450" Width="800">
-
+    <Window.Resources>
+        <ResourceDictionary Source="StyleWordSearch.xaml"/>
+    </Window.Resources>
     <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="0.5*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="0.5*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <StackPanel x:Name="InitialData" Grid.Row="0" Grid.ColumnSpan="2" Orientation="Vertical"
+                    Style="{StaticResource StyleStackPanel}">
+            <StackPanel Orientation="Horizontal">
+                <Label Content="Слова для поиска:" Style="{StaticResource StyleLabel}"/>
+                <TextBox x:Name="WordsToSearch" Text="Набор слов" Style="{StaticResource StyleOutput}">
+                </TextBox>
+                <Button x:Name="SelectWords" Content="Выбор" Style="{StaticResource StyleButton}"/>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <Label Content="Директория:" Style="{StaticResource StyleLabel}"/>
+                <TextBox x:Name="SearchDirectory" Text="search directory" Style="{StaticResource StyleOutput}">
+                </TextBox>
+                <Button x:Name="SelecDirectory" Content="Выбор" Style="{StaticResource StyleButton}"/>
+            </StackPanel>
+        </StackPanel>
     </Grid>
 
 </Window>
