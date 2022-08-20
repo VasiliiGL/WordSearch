@@ -14,7 +14,8 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>
             <RowDefinition Height="*"/>
-            <RowDefinition Height="0.5*"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
@@ -69,6 +70,25 @@
                     </DataTemplate>
                 </ListBox.ItemTemplate>
             </ListBox>
+        </StackPanel>
+        <StackPanel Grid.Row="2" Grid.Column="0" Orientation="Vertical"
+                    Style="{StaticResource StyleStackPanel}">
+            <Button x:Name="SearchWordsUnsafe" Content="Начать поиск"
+                    Style="{StaticResource StyleButtonRow2}"
+                    Click="SearchWordsUnsafe_Click"/>
+        </StackPanel>
+        <StackPanel Grid.Row="2" Grid.Column="1" Orientation="Vertical"
+                    Style="{StaticResource StyleStackPanel}">
+            <Button x:Name="Report" Content="Показать отчет"
+                    Style="{StaticResource StyleButtonRow2}"
+                    Click="Report_Click"/>
+            <Button x:Name="PrintReport" Content="Сохранить отчет"
+                    Style="{StaticResource StyleButtonRow2}"
+                    Click="PrintReport_Click"/>
+        </StackPanel>
+        <StackPanel Grid.Row="3" Grid.ColumnSpan="2">
+            <Label Content="Загрузка"/>
+
         </StackPanel>
     </Grid>
 
