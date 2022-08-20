@@ -72,6 +72,7 @@ namespace Word_Search
                     try
                     {
                         FI = new FileInfo(findedFile);
+                        if (FI.DirectoryName != @"D:\VASILII\Контрольная работа WordSearch\NewDirectory")
                         data.ListFiles.Add(new WordSearch.Models.File { NameFile = FI.Name, PathFile = FI.FullName });
                     }
                     catch
@@ -80,7 +81,7 @@ namespace Word_Search
                     }
                 }
             }
-            if (data.ListFiles.Count == 0) MessageBox.Show(" файлы не найдены");
+            if (data.ListFiles.Count == 0) MessageBox.Show("Файлы не найдены");
 
         }
 
@@ -88,7 +89,7 @@ namespace Word_Search
         {
             data.FileCrud.SearchDangerFiles(data.ListFiles, data.ListWords, data.ListDangerFiles);
             data.FileCrud.CopyFiles(data.ListDangerFiles, data.ListWords);
-            MessageBox.Show(data.ListDangerFiles.Count.ToString());
+            if (data.ListDangerFiles.Count==0) _ = MessageBox.Show("Файлы не найдены");
         }
 
         private void Report_Click(object sender, RoutedEventArgs e)
