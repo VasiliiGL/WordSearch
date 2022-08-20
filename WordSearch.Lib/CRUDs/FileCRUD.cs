@@ -2,7 +2,10 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
+using System.Linq;
 using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
 using Microsoft.Win32;
 
 namespace WordSearch.Models.CRUDs
@@ -14,7 +17,9 @@ namespace WordSearch.Models.CRUDs
         {
             TextCrud = new TextCRUD();
         }
-        public void SearchDangerFiles(ObservableCollection<File> listFiles, ObservableCollection<Word> listWords, ObservableCollection<File> ListDanderFiles)
+
+        
+        public void SearchDangerFiles(ObservableCollection<FileSearch> listFiles, ObservableCollection<Word> listWords, ObservableCollection<FileSearch> ListDanderFiles)
         {
             if (listFiles != null)
             {
@@ -35,10 +40,122 @@ namespace WordSearch.Models.CRUDs
                         }
                     }
                 }
-            }
-            
+            }          
         }
-        public void CopyFiles(ObservableCollection<File> listFiles, ObservableCollection<Word> setwords)
+        //public ObservableCollection<FileSearch> SearchDangerFiles(DataViewModels data, int amount)
+        //{
+
+        //    if (data.ListFiles != null)
+        //    {
+        //        //ListDanderFiles.Clear();
+        //        string wordForSearch;
+        //        string textForSearch;
+        //        for (var f = 0; f < amount; f++)
+        //        {
+        //            for (var w = 0; w < data.ListWords.Count; w++)
+        //            {
+        //                wordForSearch = data.ListWords[w].WordSearch;
+        //                textForSearch = TextCrud.ReadTextOfFile(data.ListFiles[f].PathFile);
+        //                // textForSearch = TextCrud.DeleteSigns(textForSearch);
+        //                if (TextCrud.IsSearchWords(textForSearch, data.ListWords))
+        //                {
+        //                    data.ListDangerFiles.Add(data.ListFiles[f]);
+        //                    break;
+        //                }
+        //            }
+        //        }
+        //    }
+        //    return data.ListDangerFiles;
+        //}
+        //public ObservableCollection<FileSearch> SearchDangerFiles(DataViewModels data, int amount1, int amount2)
+        //{
+
+
+        //    string wordForSearch;
+        //    string textForSearch;
+        //    for (var f = amount1; f < amount2; f++)
+        //    {
+        //        for (var w = 0; w < data.ListWords.Count; w++)
+        //        {
+        //            wordForSearch = data.ListWords[w].WordSearch;
+        //            textForSearch = TextCrud.ReadTextOfFile(data.ListFiles[f].PathFile);
+        //            textForSearch = TextCrud.DeleteSigns(textForSearch);
+        //            if (TextCrud.IsSearchWords(textForSearch, data.ListWords))
+        //            {
+        //                data.ListDangerFiles.Add(data.ListFiles[f]);
+        //                break;
+        //            }
+        //        }
+        //    }
+
+        //    return data.ListDangerFiles;
+        //}
+
+
+        //public void Search(DataViewModels data)
+        //{
+        //    var list1 = new ObservableCollection<FileSearch>();
+        //    var list2 = new ObservableCollection<FileSearch>();
+        //    int amount_1;
+        //    int amount_2;
+        //    var task = new Task[2];
+        //    int size = data.ListFiles.Count;
+        //    if (data.ListFiles != null)
+        //    {
+        //        if (data.ListFiles.Count >= 2)
+        //        {
+        //            amount_1 = data.ListFiles.Count / 2;
+        //            amount_2 = data.ListFiles.Count - amount_1;
+        //            list1 = SearchDangerFiles(data, amount_1);
+        //            list2 = SearchDangerFiles(data, amount_1, amount_2);
+        //            foreach (var file in list1)
+        //            {
+        //                data.ListDangerFiles.Add(file);
+        //            }
+        //            foreach (var file in list2)
+        //            {
+        //                data.ListDangerFiles.Add(file);
+        //            }
+        //            return data.ListDangerFiles;
+        //        }
+        //        else
+        //        {
+        //            list1 = SearchDangerFiles(data, data.ListFiles.Count);
+        //            foreach (var file in list1)
+        //            {
+        //                data.ListDangerFiles.Add(file);
+
+        //            }
+        //            return data.ListDangerFiles;
+        //        }
+        //    }
+
+        //    return data.ListDangerFiles;
+        //}
+
+        //public async Task SearchAsync(DataViewModels data, CancellationToken toren )
+        //{
+        //    await Task.Run((Action)(() =>
+        //   {
+        //       if (toren.IsCancellationRequested)
+        //       {
+        //           Console.WriteLine("прервано");
+        //           toren.ThrowIfCancellationRequested();
+        //       }
+        //       this.SearchAsync((DataViewModels)data);
+        //   }), toren);
+        //}
+        //public async Task<ObservableCollection<File>> SearchAsync(DataViewModels data)
+        //{
+        //    await Task.Run((Action)(() =>
+        //    {             
+        //        this.SearchAsync((DataViewModels)data);
+        //    }));
+        //    return data.ListDangerFiles;
+        //}
+
+
+        public void CopyFiles(ObservableCollection<FileSearch> listFiles, ObservableCollection<Word> setwords)
         {
             if (listFiles != null)
             {
@@ -69,7 +186,7 @@ namespace WordSearch.Models.CRUDs
                 directory.Create();
             }
         }
-        public void CreatCopyFile(File file, ObservableCollection<Word> setwords)
+        public void CreatCopyFile(FileSearch file, ObservableCollection<Word> setwords)
         {
             string newNameFile = "New" + "_" + file.NameFile;
             string pathDirectory = @"D:\VASILII\Контрольная работа WordSearch\NewDirectory";
@@ -89,16 +206,11 @@ namespace WordSearch.Models.CRUDs
                 Console.WriteLine(e);
             }
         }
-        public string ReplaceTextInFile(File file, ObservableCollection<Word> SetWords)
+        public string ReplaceTextInFile(FileSearch file, ObservableCollection<Word> SetWords)
         {
             var pathFile = file.PathFile;
             string textFile = TextCrud.ReadTextOfFile(pathFile);
-            string newTextFile = "";
-            //for (var i = 0; i < SetWords.Count; i++)
-            //{
-            //    newTextFile= TextCrud.ReplaceText(textFile, SetWords[i].WordSearch);
-            //}
-
+            string newTextFile = "";   
             foreach (var word in SetWords)
             {
                 newTextFile = TextCrud.ReplaceText(textFile, word.WordSearch);
