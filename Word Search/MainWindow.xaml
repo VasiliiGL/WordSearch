@@ -12,7 +12,7 @@
     </Window.Resources>
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="0.5*"/>
+            <RowDefinition Height="auto"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="0.5*"/>
         </Grid.RowDefinitions>
@@ -22,19 +22,22 @@
         </Grid.ColumnDefinitions>
         
         <StackPanel x:Name="InitialData" Grid.Row="0" Grid.ColumnSpan="2" Orientation="Vertical"
+                    DataContext="{Binding SelectedWord}"
                     Style="{StaticResource StyleStackPanel}">
-            <StackPanel Orientation="Horizontal">
+            <WrapPanel Orientation="Horizontal">
                 <Label Content="Слова для поиска:" Style="{StaticResource StyleLabel}"/>
-                <TextBox x:Name="WordsToSearch" Text="Набор слов" Style="{StaticResource StyleOutput}">
+                <TextBox x:Name="WordsToSearch" Text="{Binding Path= WordSearch}" 
+                         Style="{StaticResource StyleOutput}">
                 </TextBox>
-                <Button x:Name="SelectWords" Content="Выбор" Style="{StaticResource StyleButton}"/>
-            </StackPanel>
-            <StackPanel Orientation="Horizontal">
+                <Button x:Name="SelectWords" Content="Выбор" Style="{StaticResource StyleButton}"
+                        Click="SelectWords_Click"/>
+            </WrapPanel>
+            <WrapPanel Orientation="Horizontal">
                 <Label Content="Директория:" Style="{StaticResource StyleLabel}"/>
                 <TextBox x:Name="SearchDirectory" Text="search directory" Style="{StaticResource StyleOutput}">
                 </TextBox>
                 <Button x:Name="SelecDirectory" Content="Выбор" Style="{StaticResource StyleButton}"/>
-            </StackPanel>
+            </WrapPanel>
         </StackPanel>
 
         <StackPanel x:Name="DirectoryContent"  Grid.Row="1" Grid.Column="0"  Orientation="Vertical" >
