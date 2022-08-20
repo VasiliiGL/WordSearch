@@ -6,15 +6,21 @@ using System.Text;
 
 namespace WordSearch.Models
 {
-    public class File : INotifyPropertyChanged
+    public class FileSearch : INotifyPropertyChanged
     {
         private string _nameFile;
         private string _pathFile;
         private string _text;
         private long _sizeFile;
-        
 
-        public Dictionary<Word, int> ListDangerWords { get; set; }
+        public Dictionary<string, int> ListDangerWords { get; set; }
+        public string ListWordsReport { get; set; }
+
+        public FileSearch()
+        {
+            ListDangerWords = new Dictionary<string, int>();
+        }
+       
         public string NameFile
         {
             get => _nameFile;
