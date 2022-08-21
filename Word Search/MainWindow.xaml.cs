@@ -2,6 +2,7 @@
 using Microsoft.WindowsAPICodePack.Dialogs;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -34,6 +35,7 @@ namespace Word_Search
 
         private  void SelectWords_Click(object sender, RoutedEventArgs e)
         {
+            data.ListDangerFiles.Clear();
             try
             {
                 var dialog = new OpenFileDialog();
@@ -58,6 +60,11 @@ namespace Word_Search
 
         private void SelecDirectory_Click(object sender, RoutedEventArgs e)
         {
+            BackgroundWorker worker1 = new BackgroundWorker();
+            worker1.WorkerReportsProgress = true;
+            worker1.DoWork += worker_DoWork;
+            worker1.ProgressChanged += worker_ProgressChanged;
+            worker1.RunWorkerAsync();
             var dialog = new CommonOpenFileDialog();
             dialog.IsFolderPicker = true;
              CommonFileDialogResult result = dialog.ShowDialog();
@@ -66,21 +73,29 @@ namespace Word_Search
                 SearchDirectory.Text = dialog.FileName;
                 string fileName = "*.txt";
                 data.ListFiles.Clear();
-                foreach (string findedFile in System.IO.Directory.EnumerateFiles(SearchDirectory.Text, fileName,
-                    SearchOption.AllDirectories))
+                try
                 {
-                    FileInfo FI;
-                    try
+                    foreach (string findedFile in System.IO.Directory.EnumerateFiles(SearchDirectory.Text, fileName,
+                   SearchOption.AllDirectories))
                     {
-                        FI = new FileInfo(findedFile);
-                        if (FI.DirectoryName != @"D:\VASILII\Контрольная работа WordSearch\NewDirectory")
-                        data.ListFiles.Add(new FileSearch { NameFile = FI.Name, PathFile = FI.FullName, SizeFile=FI.Length });
-                    }
-                    catch
-                    {
-                        continue;
+                        FileInfo FI;
+                        try
+                        {
+                            FI = new FileInfo(findedFile);
+                            if (FI.DirectoryName != @"D:\VASILII\Контрольная работа WordSearch\NewDirectory")
+                                data.ListFiles.Add(new FileSearch { NameFile = FI.Name, PathFile = FI.FullName, SizeFile = FI.Length });
+                        }
+                        catch
+                        {
+                            continue;
+                        }
                     }
                 }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.ToString());
+                }
+               
             }
             if (data.ListFiles.Count == 0) MessageBox.Show("Файлы не найдены");
 
@@ -88,14 +103,22 @@ namespace Word_Search
 
         private void SearchWordsUnsafe_Click(object sender, RoutedEventArgs e)
         {
-            data.FileCrud.SearchDangerFiles(data.ListFiles, data.ListWords, data.ListDangerFiles);
+            BackgroundWorker worker = new BackgroundWorker();
+            worker.WorkerReportsProgress = true;
+            worker.DoWork += worker_DoWork;
+            worker.ProgressChanged += worker_ProgressChanged;
+            
+            //worker.RunWorkerAsync();
+
+
+            data.FileCrud.SearchDangerFiles(data.ListFiles, data.ListWords, data.ListDangerFiles, worker);
             data.FileCrud.CopyFiles(data.ListDangerFiles, data.ListWords);
             if (data.ListDangerFiles.Count == 0) _ = MessageBox.Show("Файлы не найдены");
             foreach (var f in data.ListDangerFiles)
             {
-                data.TextCrud.SearchDangerWord(f, data.ListWords);
+                data.TextCrud.SearchDangerWord(f, data.ListWords);                
             }
-           
+            
             //var tokenSource = new CancellationTokenSource();
             //Task.Run(async() => await data.FileCrud.SearchAsync(data, tokenSource.Token), tokenSource.Token);
             //Console.WriteLine("Остановить 1");
@@ -143,6 +166,33 @@ namespace Word_Search
                
             }
         }
-        
+
+        //private void Window_ContentRendered(object sender, EventArgs e)
+        //{
+        //    BackgroundWorker worker = new BackgroundWorker();
+        //    worker.WorkerReportsProgress = true;
+        //    worker.DoWork += worker_DoWork;
+        //    worker.ProgressChanged += worker_ProgressChanged;
+
+        //    worker.RunWorkerAsync();
+
+        //}
+
+        private void worker_ProgressChanged(object sender, ProgressChangedEventArgs e)
+        {
+            pbStatus.Value = e.ProgressPercentage;
+        }
+
+        private void worker_DoWork(object sender, DoWorkEventArgs e)
+        {
+            var size = data.ListFiles.Count;
+            //if (data.ListFiles.Count == 0) size = 100;
+            for (int i = 0; i <=size; i++)
+            {
+                (sender as BackgroundWorker).ReportProgress(i);
+                Thread.Sleep(10);
+            }
+        }
+
     }
 }

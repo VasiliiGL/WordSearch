@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -19,10 +20,11 @@ namespace WordSearch.Models.CRUDs
         }
 
         
-        public void SearchDangerFiles(ObservableCollection<FileSearch> listFiles, ObservableCollection<Word> listWords, ObservableCollection<FileSearch> ListDanderFiles)
+        public void SearchDangerFiles(ObservableCollection<FileSearch> listFiles, ObservableCollection<Word> listWords, ObservableCollection<FileSearch> ListDanderFiles, BackgroundWorker worker)
         {
             if (listFiles != null)
             {
+                worker.RunWorkerAsync();
                 ListDanderFiles.Clear();
                 string wordForSearch;
                 string textForSearch;

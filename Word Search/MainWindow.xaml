@@ -86,8 +86,9 @@
                     Style="{StaticResource StyleButtonRow2}"
                     Click="PrintReport_Click"/>
         </StackPanel>
-        <StackPanel Grid.Row="3" Grid.ColumnSpan="2">
-            <Label Content="Загрузка"/>
+        <StackPanel Grid.Row="3" Grid.ColumnSpan="2" Orientation="Vertical">
+            <Label Content="Выполнение"/>
+            <ProgressBar Minimum="0" Maximum="{Binding ListFiles.Count}" x:Name="pbStatus" Height="20"/>
 
         </StackPanel>
     </Grid>

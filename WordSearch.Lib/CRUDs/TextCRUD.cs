@@ -78,6 +78,8 @@ namespace WordSearch.Models.CRUDs
             var grouped = listDangerWords
                            .GroupBy(i => i)
                            .Select(i => new { Word = i.Key, Count = i.Count() }).OrderByDescending(i => i.Count);
+            file.ListDangerWords.Clear();
+            file.ListWordsReport = "";
             foreach (var i in grouped)
             {
                 file.ListDangerWords.Add(i.Word, i.Count);
