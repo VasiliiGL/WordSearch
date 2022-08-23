@@ -5,6 +5,7 @@ using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Text;
 using WordSearch.Models.CRUDs;
+using WordSearch.Models.Lib;
 
 namespace WordSearch.Models
 {
@@ -17,6 +18,7 @@ namespace WordSearch.Models
         public TextCRUD TextCrud { get; set; }
         public ListWordsCRUD ListWordsCrud { get; set; }
         public FileCRUD FileCrud { get; set; }
+        public Logger Logger { get; set; }
 
         public DataViewModels()
         {
@@ -27,6 +29,7 @@ namespace WordSearch.Models
             TextCrud = new TextCRUD();
             ListWordsCrud = new ListWordsCRUD();
             FileCrud = new FileCRUD();
+            Logger = new Logger();
         }
 
         private Word _selectedWord;
