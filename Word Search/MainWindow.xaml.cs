@@ -30,7 +30,8 @@ namespace Word_Search
         public MainWindow()
         {
             InitializeComponent();
-            DataContext = data;         
+            DataContext = data;
+            Task taskLogClear = data.Logger.ClearLogAsync();
         }
 
         private  void SelectWords_Click(object sender, RoutedEventArgs e)
@@ -48,8 +49,10 @@ namespace Word_Search
                     string filename = dialog.FileName;
                     var word = new Word { WordSearch = data.TextCrud.DeleteSigns(System.IO.File.ReadAllText(filename)) };
                     data.SelectedWord = word;
+                    Task task = data.Logger.SaveLogAsync($"{DateTime.Now} Выбраны слова для поиска: {data.SelectedWord.WordSearch}");
                 }
                 data.ListWordsCrud.AddFromString(data);
+                
             }
             catch (Exception ex)
             {
