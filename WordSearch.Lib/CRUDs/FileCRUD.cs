@@ -8,11 +8,15 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Win32;
+using WordSearch.Models.Lib;
 
 namespace WordSearch.Models.CRUDs
 {
     public class FileCRUD
     {
+        public delegate void AccountHandler(FileCRUD sender, LoggerEventArgs e);
+        public event AccountHandler? Notify;
+
         public TextCRUD TextCrud { get; set; }
         public FileCRUD()
         {
@@ -177,6 +181,7 @@ namespace WordSearch.Models.CRUDs
             {
                 CreatDirectory();
                 fileInfo.CopyTo(newpathFile, true);
+                Notify?.Invoke(this, new LoggerEventArgs($"{DateTime.Now} Сохранена копия копия файла: {name}"));
             }
         }
         public void CreatDirectory()
@@ -202,6 +207,7 @@ namespace WordSearch.Models.CRUDs
                 newText = ReplaceTextInFile(file, setwords);
                 streamWriter.WriteLine(newText);
                 streamWriter.Close();
+                Notify?.Invoke(this, new LoggerEventArgs($"{DateTime.Now} Создана копия файла с заменой слов: {newpathFileCopy}"));
             }
             catch (Exception e)
             {

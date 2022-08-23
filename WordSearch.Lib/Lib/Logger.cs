@@ -32,5 +32,9 @@ namespace WordSearch.Models.Lib
                 await writer.WriteLineAsync($"Дата создания файла:{DateTime.Now}");
             }
         }
+        public void SaveMessage(FileCRUD sender, LoggerEventArgs e)
+        {
+            Task task = SaveLogAsync($"{e.Message} {sender.ToString()}");
+        }
     }
 }

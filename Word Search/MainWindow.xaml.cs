@@ -32,6 +32,7 @@ namespace Word_Search
             InitializeComponent();
             DataContext = data;
             Task taskLogClear = data.Logger.ClearLogAsync();
+            data.FileCrud.Notify += data.Logger.SaveMessage;
         }
 
         private  void SelectWords_Click(object sender, RoutedEventArgs e)
