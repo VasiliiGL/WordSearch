@@ -152,24 +152,23 @@ namespace Word_Search
 
         }
 
-        public async Task SearhFilesAsync()
-        {
-            FileSearch file = new FileSearch();
-            //await Task.Run(() => data.FileCrud.Search(data));
-            for (var i=0;i<data.ListFiles.Count;i++)
-            {
-                await Task.Run(() =>
-                {
-                    if (data.TextCrud.IsSearchWords(data.TextCrud.ReadTextOfFile(data.ListFiles[i].PathFile), data.ListWords))
-                    {
-                        file = data.ListFiles[i];
-                        data.ListDangerFiles.Add(file);
-                    }
+        //public async Task SearhFilesAsync()
+        //{
+        //    FileSearch file = new FileSearch();
+        //    //await Task.Run(() => data.FileCrud.Search(data));
+        //    for (var i=0;i<data.ListFiles.Count;i++)
+        //    {
+        //        await Task.Run(() =>
+        //        {
+        //            if (data.TextCrud.IsSearchWords(data.TextCrud.ReadTextOfFile(data.ListFiles[i].PathFile), data.ListWords))
+        //            {
+        //                file = data.ListFiles[i];
+        //                data.ListDangerFiles.Add(file);
+        //            }
                     
-                });
-               
-            }
-        }
+        //        });             
+        //    }
+        //}
 
         //private void Window_ContentRendered(object sender, EventArgs e)
         //{

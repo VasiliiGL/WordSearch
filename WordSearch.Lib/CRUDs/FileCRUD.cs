@@ -48,130 +48,29 @@ namespace WordSearch.Models.CRUDs
                 }
             }          
         }
-        //public ObservableCollection<FileSearch> SearchDangerFiles(DataViewModels data, int amount)
-        //{
-
-        //    if (data.ListFiles != null)
-        //    {
-        //        //ListDanderFiles.Clear();
-        //        string wordForSearch;
-        //        string textForSearch;
-        //        for (var f = 0; f < amount; f++)
-        //        {
-        //            for (var w = 0; w < data.ListWords.Count; w++)
-        //            {
-        //                wordForSearch = data.ListWords[w].WordSearch;
-        //                textForSearch = TextCrud.ReadTextOfFile(data.ListFiles[f].PathFile);
-        //                // textForSearch = TextCrud.DeleteSigns(textForSearch);
-        //                if (TextCrud.IsSearchWords(textForSearch, data.ListWords))
-        //                {
-        //                    data.ListDangerFiles.Add(data.ListFiles[f]);
-        //                    break;
-        //                }
-        //            }
-        //        }
-        //    }
-        //    return data.ListDangerFiles;
-        //}
-        //public ObservableCollection<FileSearch> SearchDangerFiles(DataViewModels data, int amount1, int amount2)
-        //{
 
 
-        //    string wordForSearch;
-        //    string textForSearch;
-        //    for (var f = amount1; f < amount2; f++)
-        //    {
-        //        for (var w = 0; w < data.ListWords.Count; w++)
-        //        {
-        //            wordForSearch = data.ListWords[w].WordSearch;
-        //            textForSearch = TextCrud.ReadTextOfFile(data.ListFiles[f].PathFile);
-        //            textForSearch = TextCrud.DeleteSigns(textForSearch);
-        //            if (TextCrud.IsSearchWords(textForSearch, data.ListWords))
-        //            {
-        //                data.ListDangerFiles.Add(data.ListFiles[f]);
-        //                break;
-        //            }
-        //        }
-        //    }
-
-        //    return data.ListDangerFiles;
-        //}
-
-
-        //public void Search(DataViewModels data)
-        //{
-        //    var list1 = new ObservableCollection<FileSearch>();
-        //    var list2 = new ObservableCollection<FileSearch>();
-        //    int amount_1;
-        //    int amount_2;
-        //    var task = new Task[2];
-        //    int size = data.ListFiles.Count;
-        //    if (data.ListFiles != null)
-        //    {
-        //        if (data.ListFiles.Count >= 2)
-        //        {
-        //            amount_1 = data.ListFiles.Count / 2;
-        //            amount_2 = data.ListFiles.Count - amount_1;
-        //            list1 = SearchDangerFiles(data, amount_1);
-        //            list2 = SearchDangerFiles(data, amount_1, amount_2);
-        //            foreach (var file in list1)
-        //            {
-        //                data.ListDangerFiles.Add(file);
-        //            }
-        //            foreach (var file in list2)
-        //            {
-        //                data.ListDangerFiles.Add(file);
-        //            }
-        //            return data.ListDangerFiles;
-        //        }
-        //        else
-        //        {
-        //            list1 = SearchDangerFiles(data, data.ListFiles.Count);
-        //            foreach (var file in list1)
-        //            {
-        //                data.ListDangerFiles.Add(file);
-
-        //            }
-        //            return data.ListDangerFiles;
-        //        }
-        //    }
-
-        //    return data.ListDangerFiles;
-        //}
-
-        //public async Task SearchAsync(DataViewModels data, CancellationToken toren )
-        //{
-        //    await Task.Run((Action)(() =>
-        //   {
-        //       if (toren.IsCancellationRequested)
-        //       {
-        //           Console.WriteLine("прервано");
-        //           toren.ThrowIfCancellationRequested();
-        //       }
-        //       this.SearchAsync((DataViewModels)data);
-        //   }), toren);
-        //}
-        //public async Task<ObservableCollection<File>> SearchAsync(DataViewModels data)
-        //{
-        //    await Task.Run((Action)(() =>
-        //    {             
-        //        this.SearchAsync((DataViewModels)data);
-        //    }));
-        //    return data.ListDangerFiles;
-        //}
-
-
-        public void CopyFiles(ObservableCollection<FileSearch> listFiles, ObservableCollection<Word> setwords)
+        public void CopyFiles(ObservableCollection<FileSearch> listDangerFiles, ObservableCollection<Word> setwords)
         {
-            if (listFiles != null)
+            if (listDangerFiles != null)
             {
-                foreach (var file in listFiles)
+                Parallel.Invoke(() =>
                 {
-                    CopyFile(file.PathFile, file.NameFile);
-                    CreatCopyFile(file, setwords);
-                }
+                    foreach (var file in listDangerFiles)
+                    {
+                        CopyFile(file.PathFile, file.NameFile);
+                    }
+                },
+                () =>
+                {
+                    foreach (var file in listDangerFiles)
+                    {
+                        CreatCopyFile(file, setwords);
+                    }
+                });
             }
         }
+
         public void CopyFile(string path, string name)
         {
             string pathDirectory = @"D:\VASILII\Контрольная работа WordSearch\NewDirectory";
