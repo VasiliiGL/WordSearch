@@ -18,7 +18,7 @@ namespace WordSearch.Models.Lib
         }
         public async Task SaveLogAsync (string message)
         {
-            FileCrudLog.CreatDirectory();
+            //FileCrudLog.CreatDirectory(pathDirectory);
             
             using (StreamWriter writerLog = new StreamWriter(pathFileLog, true))
             {
@@ -34,7 +34,7 @@ namespace WordSearch.Models.Lib
         }
         public void SaveMessage(FileCRUD sender, LoggerEventArgs e)
         {
-            Task task = SaveLogAsync($"{e.Message} {sender.ToString()}");
+            Task task = SaveLogAsync($"{e.Message}");
         }
     }
 }
