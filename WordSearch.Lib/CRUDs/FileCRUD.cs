@@ -51,56 +51,56 @@ namespace WordSearch.Models.CRUDs
         }
 
 
-        public void CopyFiles(ObservableCollection<FileSearch> listDangerFiles, ObservableCollection<Word> setwords)
+        public void CopyFiles(DataViewModels data)
         {
-            if (listDangerFiles != null)
+            if (data.ListDangerFiles != null)
             {
 
                 Parallel.Invoke(() =>
                 {
-                    foreach (var file in listDangerFiles)
+                    foreach (var file in data.ListDangerFiles)
                     {
-                        CopyFile(file.PathFile, file.NameFile);
+                        CopyFile(file.PathFile, file.NameFile, data.InitialData.DirectoryForCopyFile);
                     }
                 },
                 async () =>
                 {
-                   if(listDangerFiles.Count==1) await CreatCopyFiles(listDangerFiles, setwords);
+                   if(data.ListDangerFiles.Count==1) await CreatCopyFiles(data.ListDangerFiles, data.ListWords, data.InitialData.DirectoryForCopyFile);
                    else
                     {
                         var listDangerFiles1 = new ObservableCollection<FileSearch>();
                         var listDangerFiles2 = new ObservableCollection<FileSearch>();
-                        for (var i =0; i< listDangerFiles.Count/2;i++)
+                        for (var i =0; i< data.ListDangerFiles.Count/2;i++)
                         {                          
-                            listDangerFiles1.Add(listDangerFiles[i]);
+                            listDangerFiles1.Add(data.ListDangerFiles[i]);
                         }
-                        for (var i = listDangerFiles.Count / 2; i < listDangerFiles.Count; i++)
+                        for (var i = data.ListDangerFiles.Count / 2; i < data.ListDangerFiles.Count; i++)
                         {
-                            listDangerFiles2.Add(listDangerFiles[i]);
+                            listDangerFiles2.Add(data.ListDangerFiles[i]);
                         }
 
-                        await CreatCopyFiles(listDangerFiles1, setwords);
-                        await CreatCopyFiles(listDangerFiles2, setwords);
+                        await CreatCopyFiles(listDangerFiles1, data.ListWords, data.InitialData.DirectoryForCopyFile);
+                        await CreatCopyFiles(listDangerFiles2, data.ListWords, data.InitialData.DirectoryForCopyFile);
                     }
                 });
             }
         }
 
-        public void CopyFile(string path, string name)
+        public void CopyFile(string path, string name, string _pathDirectory)
         {
-            string pathDirectory = @"D:\VASILII\Контрольная работа WordSearch\NewDirectory";
+            string pathDirectory = _pathDirectory;
             string newpathFile = pathDirectory + @"\" + name;
             FileInfo fileInfo = new FileInfo(path);
             if (fileInfo.Exists)
             {
-                CreatDirectory();
+                CreatDirectory(_pathDirectory);
                 fileInfo.CopyTo(newpathFile, true);
                 Notify?.Invoke(this, new LoggerEventArgs($"{DateTime.Now} Сохранена копия копия файла: {name}"));
             }
         }
-        public void CreatDirectory()
+        public void CreatDirectory(string _pathDirectory)
         {
-            string path = @"D:\VASILII\Контрольная работа WordSearch\NewDirectory";
+            string path = _pathDirectory;
             DirectoryInfo directory = new DirectoryInfo(path);
             if (!directory.Exists)
             {
@@ -129,14 +129,14 @@ namespace WordSearch.Models.CRUDs
         //    }
         //}
 
-        async Task CreatCopyFiles(ObservableCollection<FileSearch> listDangerFiles, ObservableCollection<Word> setwords)
+        async Task CreatCopyFiles(ObservableCollection<FileSearch> listDangerFiles, ObservableCollection<Word> setwords, string _pathDirectory)
         {
             await Task.Run(() =>
             {
                 foreach (var file in listDangerFiles)
                 {
                     string newNameFile = "New" + "_" + file.NameFile;
-                    string pathDirectory = @"D:\VASILII\Контрольная работа WordSearch\NewDirectory";
+                    string pathDirectory = _pathDirectory;
                     string newpathFileCopy = pathDirectory + @"\" + newNameFile;
                     string newText;
                     StreamWriter streamWriter;
