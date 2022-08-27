@@ -9,6 +9,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\WordSearch.Lib\WordSearch.Models.csproj" />
+	<PackageReference Include="ScottPlot.WPF" Version="4.1.57" />
   </ItemGroup>
 
 </Project>
