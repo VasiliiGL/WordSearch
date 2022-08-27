@@ -13,9 +13,15 @@ namespace WordSearch.Models.Lib
             DirectoryForWords = @"D:\VASILII\Запрещенные слова";
             DirectoryForCopyFile = @"D:\VASILII\Контрольная работа WordSearch\NewDirectory";
         }
-        public Initial(string directoryForWords)
+        public Initial(string directoryForWords, string directoryForCopyFile)
         {
-            DirectoryForWords = directoryForWords;          
+            DirectoryForWords = directoryForWords;
+            DirectoryForCopyFile = directoryForCopyFile;
+        }
+        public Initial(Initial initialData)
+        {
+            DirectoryForWords = initialData.DirectoryForWords;
+            DirectoryForCopyFile = initialData.DirectoryForCopyFile;
         }
     }
 }

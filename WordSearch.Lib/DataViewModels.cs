@@ -34,6 +34,7 @@ namespace WordSearch.Models
             FileCrud = new FileCRUD();
             Logger = new Logger();
             JsonCRUD = new JsonCRUD();
+            //InitialData = new Initial(JsonCRUD.ReadJsonFileAsync().Result);
             InitialData = new Initial();
             FileCrud.CreatDirectory(InitialData.DirectoryForCopyFile);
             System.Threading.Tasks.Task task = JsonCRUD.SaveJsonAsync(InitialData);
