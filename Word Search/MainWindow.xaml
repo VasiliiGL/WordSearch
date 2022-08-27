@@ -38,7 +38,7 @@
                 <TextBox x:Name="SearchDirectory"  Text="{Binding Path= DirectorySearch}" Style="{StaticResource StyleOutput}">
                 </TextBox>
                 <Button x:Name="SelecDirectory" Content="Выбор" Style="{StaticResource StyleButton}"
-                        Click="SelecDirectory_Click"/>
+                        Click="SelectDirectory_Click"/>
             </WrapPanel>
         </StackPanel>
 

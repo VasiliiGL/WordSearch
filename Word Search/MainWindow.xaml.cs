@@ -63,7 +63,7 @@ namespace Word_Search
             
         }
 
-        private void SelecDirectory_Click(object sender, RoutedEventArgs e)
+        private void SelectDirectory_Click(object sender, RoutedEventArgs e)
         {
             BackgroundWorker worker1 = new BackgroundWorker();
             worker1.WorkerReportsProgress = true;
@@ -72,6 +72,7 @@ namespace Word_Search
             worker1.RunWorkerAsync();
 
             var dialog = new CommonOpenFileDialog();
+            dialog.InitialDirectory = data.InitialData.DirectorySearchFile;
             dialog.IsFolderPicker = true;
             CommonFileDialogResult result = dialog.ShowDialog();
             if (result == CommonFileDialogResult.Ok)
@@ -129,12 +130,6 @@ namespace Word_Search
                 _ = MessageBox.Show("Файлы не найдены");
                 Task task = data.Logger.SaveLogAsync($"{DateTime.Now} Файлы не найдены");
             }
-            ////Формирование данных для отчета
-            //foreach (var f in data.ListDangerFiles)
-            //{
-            //    data.TextCrud.SearchDangerWord(f, data.ListWords);
-            //}
-
         }
 
         private void Report_Click(object sender, RoutedEventArgs e)
