@@ -16,10 +16,10 @@ namespace WordSearch.Models.CRUDs
             FileStream fs = new FileStream("InitilData.json", FileMode.OpenOrCreate);          
             await JsonSerializer.SerializeAsync<Initial>(fs, initialData);
         }
-        public void СhangeInitialDataInJson(string initialDirectoryForWords, string directoryForCopyFile)
+        public void СhangeInitialDataInJson(string initialDirectoryForWords, string directoryForCopyFile, string directorySearchFile)
         {
             FileStream fs = new FileStream("InitilData.json", FileMode.OpenOrCreate);
-            Initial initialData = new Initial(initialDirectoryForWords, directoryForCopyFile);
+            Initial initialData = new Initial(initialDirectoryForWords, directoryForCopyFile, directorySearchFile);
             Task task = SaveJsonAsync(initialData);
         }
         public async Task<Initial> ReadJsonFileAsync()
