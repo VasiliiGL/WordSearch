@@ -66,7 +66,7 @@ namespace WordSearch.Models.CRUDs
                 },
                 async () =>
                 {
-                    if (data.ListDangerFiles.Count == 1) await CreatCopyFiles(data.ListDangerFiles, data.ListWords, data.InitialData.DirectoryForCopyFile);
+                    if (data.ListDangerFiles.Count == 1) await CreatCopyFilesAsyng(data.ListDangerFiles, data.ListWords, data.InitialData.DirectoryForCopyFile);
                     else
                     {
                         var listDangerFiles1 = new ObservableCollection<FileSearch>();
@@ -80,8 +80,8 @@ namespace WordSearch.Models.CRUDs
                             listDangerFiles2.Add(data.ListDangerFiles[i]);
                         }
 
-                        await CreatCopyFiles(listDangerFiles1, data.ListWords, data.InitialData.DirectoryForCopyFile);
-                        await CreatCopyFiles(listDangerFiles2, data.ListWords, data.InitialData.DirectoryForCopyFile);
+                        await CreatCopyFilesAsyng(listDangerFiles1, data.ListWords, data.InitialData.DirectoryForCopyFile);
+                        await CreatCopyFilesAsyng(listDangerFiles2, data.ListWords, data.InitialData.DirectoryForCopyFile);
                     }
                 
                 },
@@ -91,6 +91,7 @@ namespace WordSearch.Models.CRUDs
                     {
 
                         await SaveDataReportAsyng(file, data);
+                        Notify?.Invoke(this, new LoggerEventArgs($"{DateTime.Now} Запуск асинхронного подчета слов в файле {file.NameFile}"));
                     }
                 }
                 );
@@ -128,7 +129,7 @@ namespace WordSearch.Models.CRUDs
             }
         }
        
-        async Task CreatCopyFiles(ObservableCollection<FileSearch> listDangerFiles, ObservableCollection<Word> setwords, string _pathDirectory)
+        public async Task CreatCopyFilesAsyng(ObservableCollection<FileSearch> listDangerFiles, ObservableCollection<Word> setwords, string _pathDirectory)
         {
             await Task.Run(() =>
             {
@@ -146,7 +147,7 @@ namespace WordSearch.Models.CRUDs
                         newText = ReplaceTextInFile(file, setwords);
                         streamWriter.WriteLine(newText);
                         streamWriter.Close();
-                        Notify?.Invoke(this, new LoggerEventArgs($"{DateTime.Now} Создана копия файла с заменой слов: {newpathFileCopy}"));
+                        Notify?.Invoke(this, new LoggerEventArgs($"{DateTime.Now} Запуск асинхронного создания копия файла с заменой слов: {newpathFileCopy}"));
                     }
                     catch (Exception e)
                     {
