@@ -95,6 +95,7 @@ namespace Word_Search
                             continue;
                         }
                     }
+                    Task task = data.Logger.SaveLogAsync($"{DateTime.Now} Выбрана директория для поиска: {SearchDirectory.Text}");
                 }
                 catch (Exception ex)
                 {
