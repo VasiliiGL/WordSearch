@@ -58,6 +58,7 @@ namespace Word_Search
             catch (Exception ex)
             {
                 Console.WriteLine(ex);
+                Task task = data.Logger.SaveLogAsync($"{DateTime.Now} Ошибка: {ex}");
             }
             
         }
@@ -100,10 +101,15 @@ namespace Word_Search
                 catch (Exception ex)
                 {
                     MessageBox.Show(ex.ToString());
+                    Task task = data.Logger.SaveLogAsync($"{DateTime.Now} Ошибка: {ex}");
                 }
                
             }
-            if (data.ListFiles.Count == 0) MessageBox.Show("Файлы не найдены");
+            if (data.ListFiles.Count == 0)
+            { 
+                MessageBox.Show("Файлы не найдены");
+                Task task = data.Logger.SaveLogAsync($"{DateTime.Now} Файлы не найдены");
+            } 
 
         }
 
