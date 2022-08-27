@@ -122,28 +122,18 @@ namespace Word_Search
             
             //worker.RunWorkerAsync();
 
-
             data.FileCrud.SearchDangerFiles(data.ListFiles, data.ListWords, data.ListDangerFiles, worker);
             data.FileCrud.CopyFiles(data);
-            if (data.ListDangerFiles.Count == 0) _ = MessageBox.Show("Файлы не найдены");
-            foreach (var f in data.ListDangerFiles)
-            {
-                data.TextCrud.SearchDangerWord(f, data.ListWords);                
+            if (data.ListDangerFiles.Count == 0)
+            { 
+                _ = MessageBox.Show("Файлы не найдены");
+                Task task = data.Logger.SaveLogAsync($"{DateTime.Now} Файлы не найдены");
             }
-            
-            //var tokenSource = new CancellationTokenSource();
-            //Task.Run(async() => await data.FileCrud.SearchAsync(data, tokenSource.Token), tokenSource.Token);
-            //Console.WriteLine("Остановить 1");
-            //var input = Console.ReadLine();
-            //if (input =="1")
+            ////Формирование данных для отчета
+            //foreach (var f in data.ListDangerFiles)
             //{
-            //    tokenSource.Cancel();
+            //    data.TextCrud.SearchDangerWord(f, data.ListWords);
             //}
-
-            //var tokenSource = new CancellationTokenSource();
-            //SearhFilesAsync();
-            //Console.WriteLine("Остановить 1");
-
 
         }
 

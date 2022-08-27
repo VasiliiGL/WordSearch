@@ -61,17 +61,18 @@ namespace WordSearch.Models.CRUDs
                     foreach (var file in data.ListDangerFiles)
                     {
                         CopyFile(file.PathFile, file.NameFile, data.InitialData.DirectoryForCopyFile);
+                        //SaveDataReport(file, data);
                     }
                 },
                 async () =>
                 {
-                   if(data.ListDangerFiles.Count==1) await CreatCopyFiles(data.ListDangerFiles, data.ListWords, data.InitialData.DirectoryForCopyFile);
-                   else
+                    if (data.ListDangerFiles.Count == 1) await CreatCopyFiles(data.ListDangerFiles, data.ListWords, data.InitialData.DirectoryForCopyFile);
+                    else
                     {
                         var listDangerFiles1 = new ObservableCollection<FileSearch>();
                         var listDangerFiles2 = new ObservableCollection<FileSearch>();
-                        for (var i =0; i< data.ListDangerFiles.Count/2;i++)
-                        {                          
+                        for (var i = 0; i < data.ListDangerFiles.Count / 2; i++)
+                        {
                             listDangerFiles1.Add(data.ListDangerFiles[i]);
                         }
                         for (var i = data.ListDangerFiles.Count / 2; i < data.ListDangerFiles.Count; i++)
@@ -82,8 +83,27 @@ namespace WordSearch.Models.CRUDs
                         await CreatCopyFiles(listDangerFiles1, data.ListWords, data.InitialData.DirectoryForCopyFile);
                         await CreatCopyFiles(listDangerFiles2, data.ListWords, data.InitialData.DirectoryForCopyFile);
                     }
-                });
+                
+                },
+                async () =>
+                {
+                    foreach (var file in data.ListDangerFiles)
+                    {
+
+                        await SaveDataReportAsyng(file, data);
+                    }
+                }
+                );
             }
+        }
+
+        public async Task SaveDataReportAsyng(FileSearch file, DataViewModels data)
+        {
+            await Task.Run(() => data.TextCrud.SearchDangerWord(file, data.ListWords));
+        }
+        public void SaveDataReport(FileSearch file, DataViewModels data)
+        {
+             data.TextCrud.SearchDangerWord(file, data.ListWords);
         }
 
         public void CopyFile(string path, string name, string _pathDirectory)
@@ -107,28 +127,7 @@ namespace WordSearch.Models.CRUDs
                 directory.Create();
             }
         }
-        //public void CreatCopyFile(FileSearch file, ObservableCollection<Word> setwords)
-        //{
-        //    string newNameFile = "New" + "_" + file.NameFile;
-        //    string pathDirectory = @"D:\VASILII\Контрольная работа WordSearch\NewDirectory";
-        //    string newpathFileCopy = pathDirectory + @"\" + newNameFile;
-        //    string newText;
-        //    StreamWriter streamWriter;
-        //    try
-        //    {
-        //        FileInfo fileInfo = new FileInfo(newpathFileCopy);
-        //        streamWriter = fileInfo.CreateText();
-        //        newText = ReplaceTextInFile(file, setwords);
-        //        streamWriter.WriteLine(newText);
-        //        streamWriter.Close();
-        //        Notify?.Invoke(this, new LoggerEventArgs($"{DateTime.Now} Создана копия файла с заменой слов: {newpathFileCopy}"));
-        //    }
-        //    catch (Exception e)
-        //    {
-        //        Console.WriteLine(e);
-        //    }
-        //}
-
+       
         async Task CreatCopyFiles(ObservableCollection<FileSearch> listDangerFiles, ObservableCollection<Word> setwords, string _pathDirectory)
         {
             await Task.Run(() =>
@@ -171,20 +170,6 @@ namespace WordSearch.Models.CRUDs
             return newTextFile;
         }
 
-        //async Task<string> ReplaceTextInFileAsync(FileSearch file, ObservableCollection<Word> SetWords)
-        //{
-        //    var pathFile = file.PathFile;
-        //    string textFile = TextCrud.ReadTextOfFile(pathFile);
-        //    string newTextFile = "";
-        //    await Task.Run(() =>
-        //    {
-        //        foreach (var word in SetWords)
-        //        {
-        //            newTextFile = TextCrud.ReplaceText(textFile, word.WordSearch);
-        //        }
-        //    });
-        //    return newTextFile;
-        //}
 
     }
 }
