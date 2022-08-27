@@ -41,10 +41,10 @@ namespace Word_Search
             try
             {
                 var dialog = new OpenFileDialog();
-                dialog.FileName = "Запрещенные слова 1";
+                dialog.FileName = "";
                 dialog.DefaultExt = ".txt";
                 dialog.Filter = "Text documents (.txt)|*.txt";
-                dialog.InitialDirectory = @"D:\VASILII\Запрещенные слова";
+                dialog.InitialDirectory = data.InitialData.DirectoryForWords;
                 if (dialog.ShowDialog() == true)
                 {
                     string filename = dialog.FileName;
@@ -69,9 +69,10 @@ namespace Word_Search
             worker1.DoWork += worker_DoWork;
             worker1.ProgressChanged += worker_ProgressChanged;
             worker1.RunWorkerAsync();
+
             var dialog = new CommonOpenFileDialog();
             dialog.IsFolderPicker = true;
-             CommonFileDialogResult result = dialog.ShowDialog();
+            CommonFileDialogResult result = dialog.ShowDialog();
             if (result == CommonFileDialogResult.Ok)
             {
                 SearchDirectory.Text = dialog.FileName;
@@ -86,7 +87,7 @@ namespace Word_Search
                         try
                         {
                             FI = new FileInfo(findedFile);
-                            if (FI.DirectoryName != @"D:\VASILII\Контрольная работа WordSearch\NewDirectory")
+                            if (FI.DirectoryName != data.InitialData.DirectoryForCopyFile)
                                 data.ListFiles.Add(new FileSearch { NameFile = FI.Name, PathFile = FI.FullName, SizeFile = FI.Length });
                         }
                         catch
@@ -116,7 +117,7 @@ namespace Word_Search
 
 
             data.FileCrud.SearchDangerFiles(data.ListFiles, data.ListWords, data.ListDangerFiles, worker);
-            data.FileCrud.CopyFiles(data.ListDangerFiles, data.ListWords);
+            data.FileCrud.CopyFiles(data);
             if (data.ListDangerFiles.Count == 0) _ = MessageBox.Show("Файлы не найдены");
             foreach (var f in data.ListDangerFiles)
             {
