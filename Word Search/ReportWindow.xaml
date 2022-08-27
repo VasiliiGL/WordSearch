@@ -26,9 +26,9 @@
             </ListView>
         </StackPanel>
         <StackPanel  x:Name="DirectoryContent"  Grid.Row="1"   Orientation="Vertical" >
-
             <Label Content ="Слова рейтинг" />
-            
+            <WpfPlot Name="ChartRatingWords" Width="600" Height="200"/>
+
         </StackPanel>
     </Grid>
 </Window>
