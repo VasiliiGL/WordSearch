@@ -19,6 +19,9 @@ namespace WordSearch.Models
         public ListWordsCRUD ListWordsCrud { get; set; }
         public FileCRUD FileCrud { get; set; }
         public Logger Logger { get; set; }
+        public JsonCRUD JsonCRUD { get; set; }
+        public Initial InitialData { get; set; }
+
 
         public DataViewModels()
         {
@@ -30,6 +33,10 @@ namespace WordSearch.Models
             ListWordsCrud = new ListWordsCRUD();
             FileCrud = new FileCRUD();
             Logger = new Logger();
+            JsonCRUD = new JsonCRUD();
+            InitialData = new Initial();
+            FileCrud.CreatDirectory(InitialData.DirectoryForCopyFile);
+            System.Threading.Tasks.Task task = JsonCRUD.SaveJsonAsync(InitialData);
         }
 
         private Word _selectedWord;
