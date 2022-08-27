@@ -90,7 +90,7 @@ namespace Word_Search
                         {
                             FI = new FileInfo(findedFile);
                             if (FI.DirectoryName != data.InitialData.DirectoryForCopyFile)
-                                data.ListFiles.Add(new FileSearch { NameFile = FI.Name, PathFile = FI.FullName, SizeFile = FI.Length });
+                                data.ListFiles.Add(new FileSearch { NameFile = FI.Name, PathFile = FI.FullName, SizeFile = FI.Length, Text = data.TextCrud.ReadTextOfFile(FI.FullName) });
                         }
                         catch
                         {
@@ -130,6 +130,8 @@ namespace Word_Search
                 _ = MessageBox.Show("Файлы не найдены");
                 Task task = data.Logger.SaveLogAsync($"{DateTime.Now} Файлы не найдены");
             }
+
+            
         }
 
         private void Report_Click(object sender, RoutedEventArgs e)

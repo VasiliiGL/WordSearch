@@ -67,9 +67,9 @@ namespace WordSearch.Models.CRUDs
             string[] ListWordsInText = text.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
             foreach (var word in ListWordsInText)
             {
-                for (var i=0; i< ListWords.Count; i++)
+                for (var i = 0; i < ListWords.Count; i++)
                 {
-                    if (string.Compare(word,ListWords[i].WordSearch)==0)
+                    if (string.Compare(word, ListWords[i].WordSearch) == 0)
                     {
                         listDangerWords.Add(word);
                     }

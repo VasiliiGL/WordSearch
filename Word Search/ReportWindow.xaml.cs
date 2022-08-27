@@ -23,5 +23,11 @@ namespace Word_Search
             InitializeComponent();
             DataContext = data;
         }
+
+        private void ListFiles_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            var text = ((FileSearch)ListFiles.SelectedItem).Text;
+            MessageBox.Show(text);
+        }
     }
 }

@@ -10,7 +10,7 @@ namespace WordSearch.Models
     {
         private string _nameFile;
         private string _pathFile;
-        private string _text;
+        public string Text { get; set; }
         private long _sizeFile;
 
         public Dictionary<string, int> ListDangerWords { get; set; }
@@ -18,7 +18,7 @@ namespace WordSearch.Models
 
         public FileSearch()
         {
-            ListDangerWords = new Dictionary<string, int>();
+            ListDangerWords = new Dictionary<string, int>();        
         }
        
         public string NameFile
