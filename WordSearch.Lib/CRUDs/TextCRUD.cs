@@ -12,7 +12,7 @@ namespace WordSearch.Models.CRUDs
     {
         public string DeleteSigns(string text)
         {
-            Regex regex = new Regex(@"\W");
+            Regex regex = new Regex(@"[\W^]", RegexOptions.IgnoreCase);
             string newText = regex.Replace(text, " ");
             return newText;
         }
@@ -63,7 +63,7 @@ namespace WordSearch.Models.CRUDs
             var text = ReadTextOfFile(file.PathFile);
             List<string> listDangerWords = new List<string>();
             List<string> list = new List<string>();
-            DeleteSigns(text);
+            text = DeleteSigns(text);
             string[] ListWordsInText = text.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
             foreach (var word in ListWordsInText)
             {
@@ -75,17 +75,19 @@ namespace WordSearch.Models.CRUDs
                     }
                 }
             }
+           
             var grouped = listDangerWords
                            .GroupBy(i => i)
                            .Select(i => new { Word = i.Key, Count = i.Count() }).OrderByDescending(i => i.Count);
             file.ListDangerWords.Clear();
-            file.ListWordsReport = "";
+          
             foreach (var i in grouped)
             {
                 file.ListDangerWords.Add(i.Word, i.Count);
                 list.Add($"{i.Word} / {i.Count}");
             }
-            file.ListWordsReport = string.Join(" ", list); 
+            file.ListWordsReport = string.Join(" ", list);
+
         }
     }
 }
