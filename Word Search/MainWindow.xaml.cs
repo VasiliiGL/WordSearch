@@ -6,6 +6,7 @@ using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
@@ -18,6 +19,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using WordSearch.Models;
+using WordSearch.Models.CRUDs;
 
 namespace Word_Search
 {
@@ -34,7 +36,6 @@ namespace Word_Search
             DataContext = data;
             Task taskLogClear = data.Logger.ClearLogAsync();
             data.FileCrud.Notify += data.Logger.SaveMessage;
-            BackgroundWorker worker;
         }
         
         private void SelectWords_Click(object sender, RoutedEventArgs e)

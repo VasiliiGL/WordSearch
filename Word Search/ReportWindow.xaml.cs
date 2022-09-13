@@ -92,12 +92,5 @@ namespace Word_Search
             return rating;
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-
-            
-        }
-
-       
     }
 }

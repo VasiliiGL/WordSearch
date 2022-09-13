@@ -60,10 +60,10 @@ namespace WordSearch.Models.CRUDs
 
         public void SearchDangerWord (FileSearch file, ObservableCollection<Word> ListWords)
         {
-            var text = ReadTextOfFile(file.PathFile);
+            var text = DeleteSigns(file.Text);
             List<string> listDangerWords = new List<string>();
             List<string> list = new List<string>();
-            text = DeleteSigns(text);
+
             string[] ListWordsInText = text.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
             foreach (var word in ListWordsInText)
             {

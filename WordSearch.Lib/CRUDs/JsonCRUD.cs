@@ -10,7 +10,7 @@ namespace WordSearch.Models.CRUDs
 {
     public class JsonCRUD
     {
-        //public Initial initialData { get; set; }
+
         public async Task SaveJsonAsync(Initial initialData)
         {
             FileStream fs = new FileStream("InitilData.json", FileMode.OpenOrCreate);          
@@ -28,5 +28,6 @@ namespace WordSearch.Models.CRUDs
             var initialData = await JsonSerializer.DeserializeAsync<Initial>(fs);
             return initialData;
         }
+
     }
 }
