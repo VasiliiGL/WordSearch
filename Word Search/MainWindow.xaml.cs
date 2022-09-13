@@ -27,15 +27,17 @@ namespace Word_Search
     public partial class MainWindow : Window
     {
         DataViewModels data = new DataViewModels();
+       
         public MainWindow()
         {
             InitializeComponent();
             DataContext = data;
             Task taskLogClear = data.Logger.ClearLogAsync();
             data.FileCrud.Notify += data.Logger.SaveMessage;
+            BackgroundWorker worker;
         }
-
-        private  void SelectWords_Click(object sender, RoutedEventArgs e)
+        
+        private void SelectWords_Click(object sender, RoutedEventArgs e)
         {
             data.ListDangerFiles.Clear();
             try
@@ -53,143 +55,80 @@ namespace Word_Search
                     Task task = data.Logger.SaveLogAsync($"{DateTime.Now} Выбраны слова для поиска: {data.SelectedWord.WordSearch}");
                 }
                 data.ListWordsCrud.AddFromString(data);
-                
+
             }
             catch (Exception ex)
             {
                 Console.WriteLine(ex);
                 Task task = data.Logger.SaveLogAsync($"{DateTime.Now} Ошибка: {ex}");
             }
-            
+
         }
-
-        private void SelectDirectory_Click(object sender, RoutedEventArgs e)
+        private void ReportProgress(int value)
         {
-            BackgroundWorker worker1 = new BackgroundWorker();
-            worker1.WorkerReportsProgress = true;
-            worker1.DoWork += worker_DoWork;
-            worker1.ProgressChanged += worker_ProgressChanged;
-            worker1.RunWorkerAsync();
-
+            pbStatus.Value = value;
+    
+        }
+        private async void SelectDirectory_Click(object sender, RoutedEventArgs e)
+        {
+            var progress = new Progress<int>(ReportProgress);
+            
+            data.ListFiles.Clear();
             var dialog = new CommonOpenFileDialog();
             dialog.InitialDirectory = data.InitialData.DirectorySearchFile;
             dialog.IsFolderPicker = true;
             CommonFileDialogResult result = dialog.ShowDialog();
+            
             if (result == CommonFileDialogResult.Ok)
             {
                 SearchDirectory.Text = dialog.FileName;
                 string fileName = "*.txt";
-                data.ListFiles.Clear();
+
                 try
                 {
-                    foreach (string findedFile in System.IO.Directory.EnumerateFiles(SearchDirectory.Text, fileName,
-                   SearchOption.AllDirectories))
-                    {
-                        FileInfo FI;
-                        try
-                        {
-                            FI = new FileInfo(findedFile);
-                            if (FI.DirectoryName != data.InitialData.DirectoryForCopyFile)
-                                data.ListFiles.Add(new FileSearch { NameFile = FI.Name, PathFile = FI.FullName, SizeFile = FI.Length, Text = data.TextCrud.ReadTextOfFile(FI.FullName) });
-                        }
-                        catch
-                        {
-                            continue;
-                        }
-                    }
+                    Label_progress.Content = "Поиск файлов в директории...";
+                    //var progress = new Progress<int>(ReportProgress);
+                    await data.DirectoryCrud.SearchFilesInDirectoryAsync(data, SearchDirectory.Text, fileName, progress);
                     Task task = data.Logger.SaveLogAsync($"{DateTime.Now} Выбрана директория для поиска: {SearchDirectory.Text}");
+                    Label_progress.Content = "Поиск файлов в директории завершен";
                 }
                 catch (Exception ex)
                 {
                     MessageBox.Show(ex.ToString());
                     Task task = data.Logger.SaveLogAsync($"{DateTime.Now} Ошибка: {ex}");
                 }
-               
             }
             if (data.ListFiles.Count == 0)
-            { 
+            {
                 MessageBox.Show("Файлы не найдены");
                 Task task = data.Logger.SaveLogAsync($"{DateTime.Now} Файлы не найдены");
-            } 
-
+            }
         }
 
-        private void SearchWordsUnsafe_Click(object sender, RoutedEventArgs e)
+        private async void SearchWordsUnsafe_Click(object sender, RoutedEventArgs e)
         {
-            BackgroundWorker worker = new BackgroundWorker();
-            worker.WorkerReportsProgress = true;
-            worker.DoWork += worker_DoWork;
-            worker.ProgressChanged += worker_ProgressChanged;
-            
-            //worker.RunWorkerAsync();
 
-            data.FileCrud.SearchDangerFiles(data.ListFiles, data.ListWords, data.ListDangerFiles, worker);
+            var progress = new Progress<int>(ReportProgress);
+            Label_progress.Content = "Поиск опасных файлов ...";
+            await data.FileCrud.SearchDangerFilesAsync(data, progress);
             data.FileCrud.CopyFiles(data);
+            Label_progress.Content = "Поиск опасных файлов завершен";
             if (data.ListDangerFiles.Count == 0)
-            { 
+            {
                 _ = MessageBox.Show("Файлы не найдены");
                 Task task = data.Logger.SaveLogAsync($"{DateTime.Now} Файлы не найдены");
             }
-
-            
         }
 
         private void Report_Click(object sender, RoutedEventArgs e)
         {
             ReportWindow reportWindow = new ReportWindow(data);
             reportWindow.Show();
-            
-
         }
 
         private void PrintReport_Click(object sender, RoutedEventArgs e)
         {
 
-        }
-
-        //public async Task SearhFilesAsync()
-        //{
-        //    FileSearch file = new FileSearch();
-        //    //await Task.Run(() => data.FileCrud.Search(data));
-        //    for (var i=0;i<data.ListFiles.Count;i++)
-        //    {
-        //        await Task.Run(() =>
-        //        {
-        //            if (data.TextCrud.IsSearchWords(data.TextCrud.ReadTextOfFile(data.ListFiles[i].PathFile), data.ListWords))
-        //            {
-        //                file = data.ListFiles[i];
-        //                data.ListDangerFiles.Add(file);
-        //            }
-                    
-        //        });             
-        //    }
-        //}
-
-        //private void Window_ContentRendered(object sender, EventArgs e)
-        //{
-        //    BackgroundWorker worker = new BackgroundWorker();
-        //    worker.WorkerReportsProgress = true;
-        //    worker.DoWork += worker_DoWork;
-        //    worker.ProgressChanged += worker_ProgressChanged;
-
-        //    worker.RunWorkerAsync();
-
-        //}
-
-        private void worker_ProgressChanged(object sender, ProgressChangedEventArgs e)
-        {
-            pbStatus.Value = e.ProgressPercentage;
-        }
-
-        private void worker_DoWork(object sender, DoWorkEventArgs e)
-        {
-            var size = data.ListFiles.Count;
-            //if (data.ListFiles.Count == 0) size = 100;
-            for (int i = 0; i <=size; i++)
-            {
-                (sender as BackgroundWorker).ReportProgress(i);
-                Thread.Sleep(10);
-            }
         }
 
     }
