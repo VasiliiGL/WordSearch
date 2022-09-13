@@ -24,25 +24,38 @@ namespace WordSearch.Models.CRUDs
         }
 
         
-        public void SearchDangerFiles(ObservableCollection<FileSearch> listFiles, ObservableCollection<Word> listWords, ObservableCollection<FileSearch> ListDanderFiles, BackgroundWorker worker)
+        public async Task SearchDangerFilesAsync(DataViewModels data, IProgress<int> progress)
         {
-            if (listFiles != null)
+
+            if (data.ListFiles != null)
             {
-                worker.RunWorkerAsync();
-                ListDanderFiles.Clear();
+                //worker.RunWorkerAsync();
+                data.ListDangerFiles.Clear();
                 string wordForSearch;
                 string textForSearch;
-               
-                for (var f = 0; f < listFiles.Count; f++)
+                await Task.Run(() =>
                 {
-                    for (var w = 0; w < listWords.Count; w++)
+                    for (int i = 0; i <= data.ListFiles.Count; i++)
                     {
-                        wordForSearch = listWords[w].WordSearch;
-                        textForSearch = TextCrud.ReadTextOfFile(listFiles[f].PathFile);
+                        progress.Report(i);
+                        Thread.Sleep(100);
+                    }
+                    progress.Report(100);
+                });
+
+                for (var f = 0; f < data.ListFiles.Count; f++)
+                {
+                    //progress.Report(f);
+                   
+                    for (var w = 0; w < data.ListWords.Count; w++)
+                    {
+                        wordForSearch = data.ListWords[w].WordSearch;
+                        textForSearch = TextCrud.ReadTextOfFile(data.ListFiles[f].PathFile);
                         // textForSearch = TextCrud.DeleteSigns(textForSearch);
-                        if (TextCrud.IsSearchWords(textForSearch, listWords))
+                        if (TextCrud.IsSearchWords(textForSearch, data.ListWords))
                         {
-                            ListDanderFiles.Add(listFiles[f]);
+                            data.ListFiles[f].Text = data.TextCrud.ReadTextOfFile(data.ListFiles[f].PathFile);
+                            data.ListDangerFiles.Add(data.ListFiles[f]);
                             break;
                         }
                     }
@@ -128,6 +141,9 @@ namespace WordSearch.Models.CRUDs
                 directory.Create();
             }
         }
+
+        
+
        
         public async Task CreatCopyFilesAsyng(ObservableCollection<FileSearch> listDangerFiles, ObservableCollection<Word> setwords, string _pathDirectory)
         {
