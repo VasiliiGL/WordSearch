@@ -57,9 +57,9 @@ namespace Word_Search
         {
             var size = data.ListWords.Count;
             double[] values = new double[size];
-            for (var i = 1; i <= size; i++)
+            for (var i = 0; i < size; i++)
             {
-                values[i-1] = i*10;
+                values[i] = RatingWord(data.ListWords[i].WordSearch, data);
             }
             return values;
         }
@@ -74,5 +74,30 @@ namespace Word_Search
             return positions;
         }
 
+        public int RatingWord (string word, DataViewModels data)
+        {
+            int rating = 0;
+            foreach (var file in data.ListDangerFiles)
+            {
+                foreach (var wordDictionary in file.ListDangerWords)
+                {
+
+                    if (wordDictionary.Key == word)
+                    {
+                        rating += wordDictionary.Value;
+                    }
+                }
+            }
+            
+            return rating;
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+
+            
+        }
+
+       
     }
 }
