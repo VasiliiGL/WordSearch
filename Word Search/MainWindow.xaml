@@ -86,10 +86,12 @@
                     Style="{StaticResource StyleButtonRow2}"
                     Click="PrintReport_Click"/>
         </StackPanel>
-        <StackPanel Grid.Row="3" Grid.ColumnSpan="2" Orientation="Vertical">
-            <Label Content="Выполнение"/>
-            <ProgressBar Minimum="0" Maximum="{Binding ListFiles.Count}" x:Name="pbStatus" Height="20"/>
-
+        <StackPanel  Grid.Row="3" Grid.ColumnSpan="2" Orientation="Vertical">
+            <Label x:Name="Label_progress"/>
+            <Grid>
+                <ProgressBar Minimum="0" Maximum="100" x:Name="pbStatus" Height="20"  />
+                <TextBlock Text="{Binding ElementName=pbStatus, Path=Value, StringFormat={}{0:0}%}" HorizontalAlignment="Center" VerticalAlignment="Center" />
+            </Grid>
         </StackPanel>
     </Grid>
 
