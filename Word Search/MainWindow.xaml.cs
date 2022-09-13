@@ -122,8 +122,16 @@ namespace Word_Search
 
         private void Report_Click(object sender, RoutedEventArgs e)
         {
-            ReportWindow reportWindow = new ReportWindow(data);
-            reportWindow.Show();
+            if (data.ListDangerFiles.Count!=0)
+            {
+                ReportWindow reportWindow = new ReportWindow(data);
+                reportWindow.Show();
+            }
+            else
+            {
+                MessageBox.Show("Файлы не найдены");
+            }
+            
         }
 
         private void PrintReport_Click(object sender, RoutedEventArgs e)
