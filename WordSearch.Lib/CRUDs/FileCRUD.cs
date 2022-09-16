@@ -135,6 +135,7 @@ namespace WordSearch.Models.CRUDs
         public void CreatDirectory(string _pathDirectory)
         {
             string path = _pathDirectory;
+
             DirectoryInfo directory = new DirectoryInfo(path);
             if (!directory.Exists)
             {
@@ -185,6 +186,21 @@ namespace WordSearch.Models.CRUDs
                 Notify?.Invoke(this, new LoggerEventArgs($"{DateTime.Now} Выполнена замена слов в файле: {pathFile}"));
             }
             return newTextFile;
+        }
+        public static void CrearFileReport(string pathFile)
+        {
+            using (StreamWriter writer = new StreamWriter(pathFile, false))
+            {
+                writer.WriteLineAsync($"Дата создания файла-отчета:{DateTime.Now}");
+            }
+        }
+
+        public static void SaveTextInFile (string message, string pathFile)
+        {
+            using (StreamWriter writerText = new StreamWriter(pathFile, true))
+            {
+                writerText.WriteLine(message);
+            }
         }
 
 

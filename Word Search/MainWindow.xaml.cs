@@ -20,6 +20,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using WordSearch.Models;
 using WordSearch.Models.CRUDs;
+using WordSearch.Models.Models;
 
 namespace Word_Search
 {
@@ -29,11 +30,15 @@ namespace Word_Search
     public partial class MainWindow : Window
     {
         DataViewModels data = new DataViewModels();
+ 
        
         public MainWindow()
         {
+            data.InitialData = JsonCRUD.ReadJsonFileAsync("initialData.json");
+            data.FileCrud.CreatDirectory(data.InitialData.DirectoryForCopyFile);
             InitializeComponent();
             DataContext = data;
+            
             Task taskLogClear = data.Logger.ClearLogAsync();
             data.FileCrud.Notify += data.Logger.SaveMessage;
         }
@@ -88,7 +93,6 @@ namespace Word_Search
                 try
                 {
                     Label_progress.Content = "Поиск файлов в директории...";
-                    //var progress = new Progress<int>(ReportProgress);
                     await data.DirectoryCrud.SearchFilesInDirectoryAsync(data, SearchDirectory.Text, fileName, progress);
                     Task task = data.Logger.SaveLogAsync($"{DateTime.Now} Выбрана директория для поиска: {SearchDirectory.Text}");
                     Label_progress.Content = "Поиск файлов в директории завершен";
@@ -137,7 +141,9 @@ namespace Word_Search
 
         private void PrintReport_Click(object sender, RoutedEventArgs e)
         {
-
+            Report report = new Report(data);
+            Task task = data.Logger.SaveLogAsync($"{DateTime.Now} Создан файл ответа {report.GetPath()}");
+            MessageBox.Show($"Отчет сохранен в файл + {report.GetPath()}");
         }
 
     }
