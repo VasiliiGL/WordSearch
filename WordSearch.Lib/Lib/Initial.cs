@@ -12,9 +12,9 @@ namespace WordSearch.Models.Lib
         
         public Initial()
         {
-            DirectoryForWords = @"D:\VASILII\Запрещенные слова";
-            DirectoryForCopyFile = @"D:\VASILII\Контрольная работа WordSearch\NewDirectory";
-            DirectorySearchFile = @"D:\VASILII\Запрещенные слова Тектсы";
+            //this.DirectoryForWords = @"D:\VASILII\Запрещенные слова";
+            //this.DirectoryForCopyFile = @"D:\VASILII\Контрольная работа WordSearch\NewDirectory";
+            //this.DirectorySearchFile = @"D:\VASILII\Запрещенные слова Тектсы";
         }
         public Initial(string directoryForWords, string directoryForCopyFile, string directorySearchFile)
         {
